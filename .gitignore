@@ -59,4 +59,7 @@ db_report.txt
 # check_db.php
 # check_users.php
 # debug_db.php
-# seed_pelanggan.php
+# Docker
+.dockerignore
+# Dockerfile and docker-compose.yml are usually committed, so I won't add them here.
+# But if there are any specific docker cache or logs, add them.
