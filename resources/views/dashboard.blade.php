@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - PDAM Tirta Bening')
+@section('title', 'Dashboard - PDAM')
 
 @section('breadcrumb')
     <div class="col-sm-6">

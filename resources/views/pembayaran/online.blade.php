@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Bayar Tagihan Online - PDAM Tirta Bening')
+@section('title', 'Bayar Tagihan Online - PDAM')
 
 @section('breadcrumb')
     <div class="col-sm-6">

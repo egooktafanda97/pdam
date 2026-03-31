@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Blank Page - PDAM Tirta Bening')
+@section('title', 'Blank Page - PDAM')
 
 @section('custom_style')
     <!-- Tambahkan custom CSS di sini -->

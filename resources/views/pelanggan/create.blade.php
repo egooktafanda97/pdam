@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Pelanggan - PDAM Tirta Bening')
+@section('title', 'Tambah Pelanggan - PDAM')
 
 @section('custom_style')
     <style>

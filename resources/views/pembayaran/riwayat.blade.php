@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Riwayat Pembayaran - PDAM Tirta Bening')
+@section('title', 'Riwayat Pembayaran - PDAM')
 
 @section('library_style')
     <link href="{{ asset('admin-template/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />

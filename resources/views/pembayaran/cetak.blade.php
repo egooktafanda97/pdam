@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk Pembayaran - PDAM Tirta Bening</title>
+    <title>Struk Pembayaran - PDAM</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -58,7 +58,7 @@
 
     <div class="struk-container">
         <div class="text-center">
-            <h3 style="margin: 0;">PDAM TIRTA BENING</h3>
+            <h3 style="margin: 0;">PDAM</h3>
             <p style="margin: 5px 0;">Jl. Air Bersih No. 1, Kota Air</p>
             <p style="margin: 0;">Telp: (021) 1234567</p>
         </div>

@@ -50,7 +50,7 @@
     <div class="container d-flex flex-column align-items-center justify-content-center">
         <div class="login-card">
             <div class="login-logo">
-                <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo PDAM">
+                <!-- <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo PDAM"> -->
                 <h4>Sistem Informasi PDAM</h4>
                 <p class="text-muted">Tirta Bening</p>
             </div>
