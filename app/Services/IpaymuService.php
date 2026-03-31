@@ -59,11 +59,13 @@ class IpaymuService
                 'signature' => $signature,
                 'va' => $this->va,
                 'timestamp' => $timestamp,
-            ])->withBody($jsonBody, 'application/json')
+            ])->withoutVerifying() // Disable SSL verification for development/sandbox
+              ->withBody($jsonBody, 'application/json')
               ->post($this->baseUrl . '/payment/direct');
 
             $result = $response->json();
 
+            Log::info('iPaymu Payload', ['url' => $this->baseUrl . '/payment/direct', 'body' => $body]);
             Log::info('iPaymu Response', ['status' => $response->status(), 'body' => $result]);
 
             if ($response->successful() && isset($result['Data'])) {
@@ -81,11 +83,11 @@ class IpaymuService
 
             return [
                 'success' => false,
-                'message' => $result['Message'] ?? 'Gagal membuat pembayaran di iPaymu',
+                'message' => $result['Message'] ?? 'Gagal membuat pembayaran di iPaymu: ' . ($result['Status'] ?? 'Unknown Error'),
                 'raw' => $result,
             ];
         } catch (\Exception $e) {
-            Log::error('iPaymu Error', ['message' => $e->getMessage()]);
+            Log::error('iPaymu Error', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return [
                 'success' => false,
                 'message' => 'Gagal terhubung ke iPaymu: ' . $e->getMessage(),

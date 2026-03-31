@@ -159,4 +159,27 @@ class PelangganPembayaranController extends Controller
             'data' => $pembayaran
         ]);
     }
+
+    public function callback(Request $request)
+    {
+        // Log callback data
+        \Illuminate\Support\Facades\Log::info('iPaymu Callback', $request->all());
+
+        $sid = $request->sid;
+        $status = $request->status; // 'berhasil' or other
+
+        if ($status == 'berhasil') {
+            $pembayaran = Pembayaran::where('referensi_gateway', $sid)->first();
+            if ($pembayaran) {
+                $pembayaran->update(['status_pembayaran' => 'Lunas']);
+                // Update tagihan juga
+                if ($pembayaran->tagihan) {
+                    $pembayaran->tagihan->update(['status' => 'Lunas']);
+                }
+                return response()->json(['message' => 'Status updated']);
+            }
+        }
+
+        return response()->json(['message' => 'Callback received']);
+    }
 }

@@ -51,3 +51,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pelanggan/pengaduan', [PelangganPengaduanController::class, 'store']);
     Route::get('/pelanggan/pengaduan/{id}', [PelangganPengaduanController::class, 'show']);
 });
+
+// iPaymu Callback (Public)
+Route::post('/ipaymu/callback', [PelangganPembayaranController::class, 'callback']);
