@@ -13,9 +13,9 @@ class IpaymuService
 
     public function __construct()
     {
-        $this->apiKey = config('ipaymu.api_key', '');
-        $this->va = config('ipaymu.va', '');
-        $this->baseUrl = config('ipaymu.url', 'https://sandbox.ipaymu.com/api/v2');
+        $this->apiKey = trim(config('ipaymu.api_key', ''));
+        $this->va = trim(config('ipaymu.va', ''));
+        $this->baseUrl = trim(config('ipaymu.url', 'https://sandbox.ipaymu.com/api/v2'));
 
         if (empty($this->apiKey) || empty($this->va)) {
             Log::error('iPaymu Configuration Missing', [
@@ -33,6 +33,11 @@ class IpaymuService
     {
         $requestHash = strtolower(hash('sha256', $jsonBody));
         $stringToSign = 'POST:' . $this->va . ':' . $requestHash . ':' . $this->apiKey;
+        
+        // Log masked string to sign for debugging
+        $maskedString = 'POST:' . $this->va . ':' . $requestHash . ':' . substr($this->apiKey, 0, 7) . '...';
+        Log::info('iPaymu StringToSign', ['string' => $maskedString]);
+
         return hash_hmac('sha256', $stringToSign, $this->apiKey);
     }
 
@@ -58,6 +63,9 @@ class IpaymuService
 
         // Filter out null values
         $body = array_filter($body, fn($value) => !is_null($value));
+
+        // Sort keys alphabetically for signature consistency
+        ksort($body);
 
         $jsonBody = json_encode($body, JSON_UNESCAPED_SLASHES);
         $signature = $this->generateSignature($jsonBody);
