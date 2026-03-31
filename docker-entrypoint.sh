@@ -13,6 +13,17 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
+# Ensure storage directories exist and are writable
+echo "Setting up storage permissions..."
+mkdir -p storage/framework/cache/data \
+         storage/framework/sessions \
+         storage/framework/views \
+         storage/logs \
+         bootstrap/cache
+
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+
 # Ensure APP_KEY is set
 if ! grep -q "APP_KEY=base64:" .env || [ -z "$(grep APP_KEY .env | cut -d '=' -f2)" ]; then
     echo "Generating Application Key..."
