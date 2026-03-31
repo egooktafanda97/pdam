@@ -27,7 +27,7 @@ Dokumen ini berisi instruksi lengkap rancangan UI dan alur aplikasi dari proses 
 │            │  │                                 │    │
 │            │  └─────────────────────────────────┘    │
 ├────────────┴─────────────────────────────────────────┤
-│  FOOTER: © 2025 PDAM Tirta Bening. All rights.      │
+│  FOOTER: © 2025 PDAM  All rights.      │
 └──────────────────────────────────────────────────────┘
 ```
 

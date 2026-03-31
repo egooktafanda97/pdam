@@ -104,7 +104,7 @@
         </div>
         
         <div class="footer-text">
-            © 2025 PDAM Tirta Bening. All rights reserved.
+            © 2025 PDAM  All rights reserved.
         </div>
     </div>
 </body>
