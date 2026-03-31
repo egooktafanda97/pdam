@@ -13,9 +13,16 @@ class IpaymuService
 
     public function __construct()
     {
-        $this->apiKey = config('ipaymu.api_key');
-        $this->va = config('ipaymu.va');
-        $this->baseUrl = config('ipaymu.url');
+        $this->apiKey = config('ipaymu.api_key', '');
+        $this->va = config('ipaymu.va', '');
+        $this->baseUrl = config('ipaymu.url', 'https://sandbox.ipaymu.com/api/v2');
+
+        if (empty($this->apiKey) || empty($this->va)) {
+            Log::error('iPaymu Configuration Missing', [
+                'va_exists' => !empty($this->va),
+                'api_key_exists' => !empty($this->apiKey)
+            ]);
+        }
     }
 
     /**
@@ -54,14 +61,19 @@ class IpaymuService
         $timestamp = date('YmdHis');
 
         try {
-            $response = Http::withHeaders([
+            $headers = [
                 'Content-Type' => 'application/json',
                 'signature' => $signature,
-                'va' => $this->va,
+                'va' => (string) $this->va,
                 'timestamp' => $timestamp,
-            ])->withoutVerifying() // Disable SSL verification for development/sandbox
-              ->withBody($jsonBody, 'application/json')
-              ->post($this->baseUrl . '/payment/direct');
+            ];
+
+            Log::info('iPaymu Headers', ['headers' => array_keys($headers), 'va_value' => $this->va]);
+
+            $response = Http::withHeaders($headers)
+                ->withoutVerifying() // Disable SSL verification for development/sandbox
+                ->withBody($jsonBody, 'application/json')
+                ->post($this->baseUrl . '/payment/direct');
 
             $result = $response->json();
 
