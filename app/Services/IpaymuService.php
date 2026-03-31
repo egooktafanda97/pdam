@@ -56,7 +56,10 @@ class IpaymuService
             'paymentChannel' => $params['paymentChannel'], // 'bni', 'bri', 'mandiri', etc.
         ];
 
-        $jsonBody = json_encode($body);
+        // Filter out null values
+        $body = array_filter($body, fn($value) => !is_null($value));
+
+        $jsonBody = json_encode($body, JSON_UNESCAPED_SLASHES);
         $signature = $this->generateSignature($jsonBody);
         $timestamp = date('YmdHis');
 
