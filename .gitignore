@@ -1,0 +1,62 @@
+# Laravel
+/vendor
+/node_modules
+/public/storage
+/public/hot
+/public/build
+/storage/*.key
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+/storage/debugbar/
+.phpunit.result.cache
+.env
+.env.backup
+.env.production
+auth.json
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.phpunit.cache
+/storage/pail
+
+# Mobile Flutter (Redundant check for root repo)
+mobile-flutter/.dart_tool/
+mobile-flutter/.flutter-plugins
+mobile-flutter/.flutter-plugins-dependencies
+mobile-flutter/.pub-cache/
+mobile-flutter/.pub/
+mobile-flutter/build/
+mobile-flutter/android/app/debug
+mobile-flutter/android/app/profile
+mobile-flutter/android/app/release
+mobile-flutter/ios/Flutter/.last_build_id
+mobile-flutter/*.iml
+mobile-flutter/.env*
+mobile-flutter/android/local.properties
+mobile-flutter/android/key.properties
+mobile-flutter/*.keystore
+mobile-flutter/*.jks
+mobile-flutter/ios/Flutter/Generated.xcconfig
+mobile-flutter/ios/Flutter/flutter_export_environment.sh
+
+# IDE & OS
+.DS_Store
+.idea/
+.vscode/
+.fleet/
+.nova/
+.zed/
+/auth.json
+Thumbs.db
+*.log
+.phpactor.json
+
+# Scratch/Utility Scripts (Optional but recommended for push)
+db_report.txt
+# check_db.php
+# check_users.php
+# debug_db.php
+# seed_pelanggan.php
