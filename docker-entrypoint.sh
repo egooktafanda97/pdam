@@ -44,6 +44,11 @@ chmod -R 775 database/
 echo "Running database migrations..."
 php artisan migrate --force
 
+# Clear cache to ensure new environment variables are loaded
+echo "Clearing application cache and configuration..."
+php artisan config:clear
+php artisan cache:clear
+
 echo "Running database seeders..."
 php artisan db:seed --force
 
