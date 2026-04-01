@@ -50,14 +50,14 @@ class IpaymuService
     public function createDirectPayment(array $params): array
     {
         $body = [
-            'name' => $params['name'],
-            'phone' => $params['phone'] ?? '081200000000',
-            'email' => $params['email'] ?? 'pelanggan@pdam.com',
-            'amount' => (int) $params['amount'],
-            'notifyUrl' => $params['notifyUrl'] ?? url('/api/ipaymu/callback'),
-            'expired' => $params['expired'] ?? 24,
-            'referenceId' => $params['referenceId'] ?? null,
-            'paymentMethod' => $params['paymentMethod'], // 'va' or 'qris'
+            'name'           => $params['name'],
+            'phone'          => $params['phone'] ?? '081200000000',
+            'email'          => $params['email'] ?? 'pelanggan@pdam.com',
+            'amount'         => (string) $params['amount'], // IPAYMU V2 often expects string
+            'notifyUrl'      => $params['notifyUrl'] ?? url('/api/ipaymu/callback'),
+            'expired'        => 24,
+            'referenceId'    => $params['referenceId'] ?? null,
+            'paymentMethod'  => $params['paymentMethod'], // 'va' or 'qris'
             'paymentChannel' => $params['paymentChannel'], // 'bni', 'bri', 'mandiri', etc.
         ];
 
