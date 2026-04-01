@@ -195,7 +195,6 @@ class _PembayaranScreenState extends State<PembayaranScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                _row('Metode', _paymentResult!['method'] ?? ''),
                 if (_paymentResult!['transaction_id'] != null)
                   _row('Transaction ID', _paymentResult!['transaction_id'].toString()),
                 _row('Kode Bayar', _paymentResult!['code'] ?? ''),

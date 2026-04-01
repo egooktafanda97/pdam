@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ApiConfig {
   // Otomatis: localhost untuk web, 10.0.2.2 untuk Android emulator
-  static String get baseUrl => 'http://139.162.5.182:8088/api';
+  static String get baseUrl =>
+      kIsWeb ? 'http://127.0.0.1:8000/api' : 'http://10.0.2.2:8000/api';
 
   // Auth
   static const String login = '/auth/login';
