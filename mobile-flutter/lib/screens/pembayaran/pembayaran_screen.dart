@@ -21,10 +21,6 @@ class _PembayaranScreenState extends State<PembayaranScreen> {
 
   final List<Map<String, dynamic>> _paymentMethods = [
     {'code': 'BNI', 'name': 'BNI Virtual Account', 'icon': Icons.account_balance},
-    {'code': 'BRI', 'name': 'BRI Virtual Account', 'icon': Icons.account_balance},
-    {'code': 'MANDIRI', 'name': 'Mandiri Virtual Account', 'icon': Icons.account_balance},
-    {'code': 'BCA', 'name': 'BCA Virtual Account', 'icon': Icons.account_balance},
-    {'code': 'QRIS', 'name': 'QRIS', 'icon': Icons.qr_code_2},
   ];
 
   Future<void> _processBayar() async {

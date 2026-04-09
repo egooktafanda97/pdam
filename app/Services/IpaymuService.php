@@ -15,7 +15,13 @@ class IpaymuService
     {
         $this->apiKey = trim(config('ipaymu.api_key', ''));
         $this->va = trim(config('ipaymu.va', ''));
-        $this->baseUrl = trim(config('ipaymu.url', 'https://sandbox.ipaymu.com/api/v2'));
+        $url = trim(config('ipaymu.url', 'https://sandbox.ipaymu.com/api/v2'));
+        $this->baseUrl = rtrim($url, '/');
+        
+        // Ensure /api/v2 suffix
+        if (!str_ends_with($this->baseUrl, '/api/v2')) {
+            $this->baseUrl .= '/api/v2';
+        }
 
         if (empty($this->apiKey) || empty($this->va)) {
             Log::error('iPaymu Configuration Missing', [
@@ -64,8 +70,8 @@ class IpaymuService
         // Filter out null values
         $body = array_filter($body, fn($value) => !is_null($value));
 
-        // Sort keys alphabetically for signature consistency
-        ksort($body);
+        // Note: Manual ksort is removed to maintain consistent order with hashing
+        // as long as we use the same $jsonBody for both.
 
         $jsonBody = json_encode($body, JSON_UNESCAPED_SLASHES);
         $signature = $this->generateSignature($jsonBody);
@@ -82,6 +88,7 @@ class IpaymuService
             Log::info('iPaymu Headers', ['headers' => array_keys($headers), 'va_value' => $this->va]);
 
             $response = Http::withHeaders($headers)
+                ->timeout(30) // Increase timeout to 30 seconds
                 ->withoutVerifying() // Disable SSL verification for development/sandbox
                 ->withBody($jsonBody, 'application/json')
                 ->post($this->baseUrl . '/payment/direct');
@@ -95,6 +102,7 @@ class IpaymuService
                 return [
                     'success' => true,
                     'transaction_id' => $result['Data']['TransactionId'] ?? null,
+                    'reference_id' => $result['Data']['ReferenceId'] ?? null,
                     'session_id' => $result['Data']['SessionId'] ?? null,
                     'payment_no' => $result['Data']['PaymentNo'] ?? null,
                     'payment_name' => $result['Data']['PaymentName'] ?? null,

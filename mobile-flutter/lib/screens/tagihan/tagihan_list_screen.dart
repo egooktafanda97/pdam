@@ -42,6 +42,27 @@ class _TagihanListScreenState extends State<TagihanListScreen> {
     setState(() => _isLoading = false);
   }
 
+  Future<void> _cancelPembayaran(int pembayaranId) async {
+    Navigator.pop(context); // Close the detail modal
+    setState(() => _isLoading = true);
+    try {
+      await _api.cancelPembayaran(pembayaranId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pembayaran berhasil dibatalkan')),
+        );
+        _loadTagihan();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Gagal membatalkan pembayaran')),
+        );
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -271,26 +292,38 @@ class _TagihanListScreenState extends State<TagihanListScreen> {
                                     ),
                                     const SizedBox(height: 12),
                                     _detailRow('Metode', activePayment.penyediaLayanan ?? activePayment.metodeBayar),
-                                    _detailRow('Ref ID', activePayment.referensiGateway ?? '-'),
+                                    _detailRow('Reference ID', activePayment.referensiGateway ?? '-'),
+                                    _detailRow('Transaction ID', activePayment.idTransaksi ?? '-'),
                                     _detailRow('Kode Bayar', activePayment.kodePembayaran, isBold: true),
                                     if (activePayment.expiredAt != null)
                                       _detailRow('Berlaku Hingga', AppFormatter.tanggalWaktu(activePayment.expiredAt!.toString())),
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              if (isExpired)
+                                if (isExpired) ...[
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 48,
+                                    child: ElevatedButton.icon(
+                                      style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(context, '/pembayaran', arguments: t);
+                                      },
+                                      icon: const Icon(Icons.refresh),
+                                      label: const Text('Generate Ulang Kode Bayar'),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
                                 SizedBox(
                                   width: double.infinity,
                                   height: 48,
-                                  child: ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.primaryColor),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      Navigator.pushNamed(context, '/pembayaran', arguments: t);
-                                    },
-                                    icon: const Icon(Icons.refresh),
-                                    label: const Text('Generate Ulang Kode Bayar'),
+                                  child: OutlinedButton.icon(
+                                    onPressed: () => _cancelPembayaran(activePayment.id),
+                                    icon: const Icon(Icons.cancel_outlined, color: Colors.red),
+                                    label: const Text('Batalkan Pembayaran', style: TextStyle(color: Colors.red)),
+                                    style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.red)),
                                   ),
                                 ),
                             ],

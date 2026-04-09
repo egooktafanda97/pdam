@@ -20,7 +20,7 @@ class PelangganDashboardController extends Controller
             return response()->json(['message' => 'Data pelanggan tidak ditemukan'], 404);
         }
 
-        $tagihanAktif = Tagihan::with('pemakaianAir')
+        $tagihanAktif = Tagihan::with('pemakaianAir', 'pembayaran')
             ->where('pelanggan_id', $pelanggan->id)
             ->whereIn('status', ['Belum Bayar', 'Pending'])
             ->latest()

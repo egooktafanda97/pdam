@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/pelanggan/bayar/{tagihan_id}', [PelangganPembayaranController::class, 'bayar']);
     Route::get('/pelanggan/riwayat', [PelangganPembayaranController::class, 'riwayat']);
     Route::get('/pelanggan/pembayaran/{id}', [PelangganPembayaranController::class, 'show']);
+    Route::post('/pelanggan/pembayaran/{id}/cancel', [PelangganPembayaranController::class, 'cancel']);
 
     // Pengaduan
     Route::get('/pelanggan/pengaduan', [PelangganPengaduanController::class, 'index']);

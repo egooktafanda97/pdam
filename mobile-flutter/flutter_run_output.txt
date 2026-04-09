@@ -1,0 +1,12 @@
+=== FLUTTER RUN === 
+Starting at 10/04/2026  4.06.57,54 
+ 
+No supported devices found with name or id matching 'emulator-5554'.
+
+The following devices were found:
+Windows (desktop) • windows • windows-x64    • Microsoft Windows [Version 10.0.26220.8079]
+Chrome (web)      • chrome  • web-javascript • Google Chrome 146.0.7680.178
+Edge (web)        • edge    • web-javascript • Microsoft Edge 147.0.3912.55
+ 
+=== DONE === 
+Finished at 10/04/2026  4.06.58,77 

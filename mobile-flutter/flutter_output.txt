@@ -1,0 +1,93 @@
+Running Flutter Doctor... 
+Doctor summary (to see all details, run flutter doctor -v):
+[√] Flutter (Channel stable, 3.24.3, on Microsoft Windows [Version 10.0.26220.8079], locale id-ID)
+[√] Windows Version (Installed version of Windows is version 10 or higher)
+[!] Android toolchain - develop for Android devices (Android SDK version 36.1.0)
+    ! Some Android licenses not accepted. To resolve this, run: flutter doctor --android-licenses
+[√] Chrome - develop for the web
+[!] Visual Studio - develop Windows apps (Visual Studio Community 2017 15.9.75)
+    X Visual Studio 2019 or later is required.
+      Download at https://visualstudio.microsoft.com/downloads/.
+      Please install the "Desktop development with C++" workload, including all of its default components
+[√] Android Studio (version 2021.1)
+[√] IntelliJ IDEA Ultimate Edition (version 2023.3)
+[√] VS Code (version unknown)
+    X Unable to determine VS Code version.
+[√] Connected device (3 available)
+[√] Network resources
+
+! Doctor found issues in 2 categories.
+ 
+Running Flutter Pub Get... 
+Resolving dependencies...
+Downloading packages...
+  async 2.11.0 (2.13.1 available)
+  boolean_selector 2.1.1 (2.1.2 available)
+  characters 1.3.0 (1.4.1 available)
+  clock 1.1.1 (1.1.2 available)
+  collection 1.18.0 (1.19.1 available)
+  cupertino_icons 1.0.8 (1.0.9 available)
+  fake_async 1.3.1 (1.3.3 available)
+  ffi 2.1.3 (2.2.0 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  flutter_secure_storage 9.2.4 (10.0.0 available)
+  flutter_secure_storage_linux 1.2.3 (3.0.0 available)
+  flutter_secure_storage_macos 3.1.3 (4.0.0 available)
+  flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
+  flutter_secure_storage_web 1.2.1 (2.1.0 available)
+  flutter_secure_storage_windows 3.1.2 (4.1.0 available)
+  flutter_svg 2.1.0 (2.2.4 available)
+  go_router 14.8.1 (17.2.0 available)
+  google_fonts 6.3.0 (8.0.2 available)
+  http_parser 4.0.2 (4.1.2 available)
+  intl 0.19.0 (0.20.2 available)
+  js 0.6.7 (0.7.2 available)
+  leak_tracker 10.0.5 (11.0.2 available)
+  leak_tracker_flutter_testing 3.0.5 (3.0.10 available)
+  leak_tracker_testing 3.0.1 (3.0.2 available)
+  lints 5.0.0 (6.1.0 available)
+  matcher 0.12.16+1 (0.12.19 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.15.0 (1.18.2 available)
+  path 1.9.0 (1.9.1 available)
+  path_provider_android 2.2.15 (2.2.23 available)
+  path_provider_foundation 2.4.1 (2.6.0 available)
+  petitparser 6.0.2 (7.0.2 available)
+  source_span 1.10.0 (1.10.2 available)
+  sqflite 2.4.1 (2.4.2 available)
+  sqflite_android 2.4.0 (2.4.2+3 available)
+  sqflite_common 2.5.4+6 (2.5.6 available)
+  sqflite_darwin 2.4.1+1 (2.4.2 available)
+  stack_trace 1.11.1 (1.12.1 available)
+  stream_channel 2.1.2 (2.1.4 available)
+  string_scanner 1.2.0 (1.4.1 available)
+  synchronized 3.3.0+3 (3.4.0 available)
+  term_glyph 1.2.1 (1.2.2 available)
+  test_api 0.7.2 (0.7.11 available)
+  vector_graphics 1.1.18 (1.1.21 available)
+  vector_graphics_compiler 1.1.16 (1.2.0 available)
+  vector_math 2.1.4 (2.3.0 available)
+  vm_service 14.2.5 (15.0.2 available)
+  win32 5.10.1 (6.0.0 available)
+  xml 6.5.0 (6.6.1 available)
+Got dependencies!
+49 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+ 
+Checking Devices... 
+Found 3 connected devices:
+  Windows (desktop) • windows • windows-x64    • Microsoft Windows [Version 10.0.26220.8079]
+  Chrome (web)      • chrome  • web-javascript • Google Chrome 146.0.7680.165
+  Edge (web)        • edge    • web-javascript • Microsoft Edge 147.0.3912.31
+
+Run "flutter emulators" to list and start any available device emulators.
+
+If you expected another device to be detected, please run "flutter doctor" to diagnose potential issues. You may also try increasing the time to wait for connected devices with the "--device-timeout" flag. Visit https://flutter.dev/setup/ for troubleshooting tips.
+ 
+Attempting to Run App on Windows... 
+Launching lib\main.dart on Windows in debug mode...
+Error: Building with plugins requires symlink support.
+
+Please enable Developer Mode in your system settings. Run
+  start ms-settings:developers
+to open settings.

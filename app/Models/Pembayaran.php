@@ -20,6 +20,7 @@ class Pembayaran extends Model
         'kode_pembayaran',
         'status_pembayaran',
         'referensi_gateway',
+        'id_transaksi',
         'bukti_pembayaran',
         'petugas_id',
         'expired_at',

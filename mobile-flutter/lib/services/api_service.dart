@@ -86,6 +86,10 @@ class ApiService {
     return _dio.get(ApiConfig.pembayaranDetail(id));
   }
 
+  Future<Response> cancelPembayaran(int id) async {
+    return _dio.post(ApiConfig.cancelPembayaran(id));
+  }
+
   // ====== PENGADUAN ====== //
 
   Future<Response> getPengaduan({int page = 1}) async {

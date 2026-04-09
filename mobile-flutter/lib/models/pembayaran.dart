@@ -10,6 +10,7 @@ class Pembayaran {
   final String kodePembayaran;
   final String statusPembayaran;
   final String? referensiGateway;
+  final String? idTransaksi;
   final DateTime? expiredAt;
   final Tagihan? tagihan;
 
@@ -23,6 +24,7 @@ class Pembayaran {
     required this.kodePembayaran,
     required this.statusPembayaran,
     this.referensiGateway,
+    this.idTransaksi,
     this.expiredAt,
     this.tagihan,
   });
@@ -38,6 +40,7 @@ class Pembayaran {
       kodePembayaran: json['kode_pembayaran'] ?? '',
       statusPembayaran: json['status_pembayaran'] ?? 'Pending',
       referensiGateway: json['referensi_gateway'],
+      idTransaksi: json['id_transaksi']?.toString(),
       expiredAt: json['expired_at'] != null 
           ? DateTime.tryParse(json['expired_at']) 
           : null,

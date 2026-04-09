@@ -58,6 +58,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() => _isLoading = false);
   }
 
+  Future<void> _cancelPembayaran(int pembayaranId) async {
+    setState(() => _isLoading = true);
+    try {
+      await _api.cancelPembayaran(pembayaranId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pembayaran berhasil dibatalkan')),
+        );
+        _loadDashboard();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Gagal membatalkan pembayaran')),
+        );
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final pelanggan = Provider.of<AuthProvider>(context).pelanggan;
@@ -223,11 +243,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildTagihanCard() {
+    final t = _tagihanAktif!;
+    
     return Card(
       child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, '/tagihan');
-        },
+        onTap: () => _showTagihanDetail(t),
         borderRadius: BorderRadius.circular(16),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -237,10 +257,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _tagihanAktif!.periodeFormatted,
+                    t.periodeFormatted,
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  StatusBadge(status: _tagihanAktif!.status),
+                  StatusBadge(status: t.status),
                 ],
               ),
               const Divider(height: 24),
@@ -249,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   const Text('Total Tagihan'),
                   Text(
-                    AppFormatter.rupiah(_tagihanAktif!.totalTagihan),
+                    AppFormatter.rupiah(t.totalTagihan),
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -259,19 +279,213 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
               const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/tagihan');
-                  },
-                  icon: const Icon(Icons.payment, size: 18),
-                  label: const Text('Bayar Sekarang'),
+              if (t.status == 'Belum Bayar')
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/pembayaran', arguments: t);
+                    },
+                    icon: const Icon(Icons.payment, size: 18),
+                    label: const Text('Bayar Sekarang'),
+                  ),
+                )
+              else if (t.status == 'Pending')
+                const SizedBox(
+                   width: double.infinity,
+                   child: Padding(
+                     padding: EdgeInsets.symmetric(vertical: 8),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: [
+                         Icon(Icons.info_outline, size: 16, color: AppTheme.primaryColor),
+                         SizedBox(width: 8),
+                         Text('Klik untuk lihat detail pembayaran', 
+                           style: TextStyle(color: AppTheme.primaryColor, fontSize: 13, fontWeight: FontWeight.w500)),
+                       ],
+                     ),
+                   ),
                 ),
-              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showTagihanDetail(Tagihan t) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          maxChildSize: 0.85,
+          minChildSize: 0.4,
+          expand: false,
+          builder: (context, scrollController) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Detail Tagihan',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      StatusBadge(status: t.status),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  _detailRow('Periode', t.periodeFormatted),
+                  _detailRow('Pemakaian', '${t.jumlahMeter} m³'),
+                  if (t.pemakaianAir != null) ...[
+                    _detailRow('Meter Awal', '${t.pemakaianAir!.meterAwal}'),
+                    _detailRow('Meter Akhir', '${t.pemakaianAir!.meterAkhir}'),
+                  ],
+                  const Divider(height: 24),
+                  _detailRow('Biaya Pemakaian', AppFormatter.rupiah(t.biayaPemakaian)),
+                  _detailRow('Biaya Admin', AppFormatter.rupiah(t.biayaAdmin)),
+                  const Divider(height: 24),
+                  _detailRow('Total Tagihan', AppFormatter.rupiah(t.totalTagihan),
+                      isBold: true),
+                  if (t.tanggalJatuhTempo != null)
+                    _detailRow('Jatuh Tempo', AppFormatter.tanggal(t.tanggalJatuhTempo)),
+                  const SizedBox(height: 24),
+                  
+                  if (t.status == 'Belum Bayar' || t.status == 'Pending') ...[
+                    Builder(
+                      builder: (context) {
+                        final pendingPayments = t.pembayaran?.where((p) => p.statusPembayaran == 'Pending').toList();
+                        final activePayment = (pendingPayments != null && pendingPayments.isNotEmpty) ? pendingPayments.last : null;
+
+                        if (activePayment != null) {
+                          final isExpired = activePayment.expiredAt != null && DateTime.now().isAfter(activePayment.expiredAt!);
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: isExpired ? Colors.red.shade50 : Colors.blue.shade50,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: isExpired ? Colors.red.shade200 : Colors.blue.shade200,
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      isExpired ? 'Menunggu Pembayaran (Kedaluwarsa)' : 'Menunggu Pembayaran',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: isExpired ? Colors.red.shade700 : Colors.blue.shade700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    _detailRow('Metode', activePayment.penyediaLayanan ?? activePayment.metodeBayar),
+                                    _detailRow('Reference ID', activePayment.referensiGateway ?? '-'),
+                                    _detailRow('Transaction ID', activePayment.idTransaksi ?? '-'),
+                                    _detailRow('Kode Bayar', activePayment.kodePembayaran, isBold: true),
+                                    if (activePayment.expiredAt != null)
+                                      _detailRow('Berlaku Hingga', AppFormatter.tanggalWaktu(activePayment.expiredAt!.toString())),
+                                  ],
+                                ),
+                              ),
+                                const SizedBox(height: 16),
+                                if (isExpired) ...[
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 48,
+                                    child: ElevatedButton.icon(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(context, '/pembayaran', arguments: t);
+                                      },
+                                      icon: const Icon(Icons.refresh),
+                                      label: const Text('Generate Ulang Kode Bayar'),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 48,
+                                  child: OutlinedButton.icon(
+                                    onPressed: () {
+                                       Navigator.pop(context);
+                                       _cancelPembayaran(activePayment.id);
+                                    },
+                                    icon: const Icon(Icons.cancel_outlined, color: Colors.red),
+                                    label: const Text('Batalkan Pembayaran', style: TextStyle(color: Colors.red)),
+                                    style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.red)),
+                                  ),
+                                ),
+                            ],
+                          );
+                        }
+
+                        // Default if Belum Bayar and no active payment
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pushNamed(context, '/pembayaran', arguments: t);
+                            },
+                            icon: const Icon(Icons.payment),
+                            label: const Text('Bayar Sekarang'),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _detailRow(String label, String value, {bool isBold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(color: Colors.grey[600])),
+          Text(
+            value,
+            style: TextStyle(
+              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
+              color: isBold ? AppTheme.primaryColor : null,
+              fontSize: isBold ? 16 : 14,
+            ),
+          ),
+        ],
       ),
     );
   }

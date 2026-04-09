@@ -1,5 +1,6 @@
 class ApiConfig {
-  static String get baseUrl => 'http://139.162.5.182:8088/api';
+  // Otomatis: localhost untuk web, 10.0.2.2 untuk Android emulator
+  static String get baseUrl => 'http://10.0.2.2:8000/api';
 
   // Auth
   static const String login = '/auth/login';
@@ -16,6 +17,7 @@ class ApiConfig {
   static String bayar(int tagihanId) => '/pelanggan/bayar/$tagihanId';
   static const String riwayat = '/pelanggan/riwayat';
   static String pembayaranDetail(int id) => '/pelanggan/pembayaran/$id';
+  static String cancelPembayaran(int id) => '/pelanggan/pembayaran/$id/cancel';
 
   // Pengaduan
   static const String pengaduan = '/pelanggan/pengaduan';

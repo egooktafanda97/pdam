@@ -27,6 +27,7 @@ class StatusBadge extends StatelessWidget {
         icon = Icons.access_time;
         break;
       case 'Gagal':
+      case 'Batal':
         bgColor = AppTheme.dangerColor.withOpacity(0.15);
         textColor = AppTheme.dangerColor;
         icon = Icons.cancel;

@@ -1,0 +1,20 @@
+Running Android Run Script... 
+Checking for devices... 
+List of devices attached
+emulator-5554	device
+
+ 
+Attempting to launch app on Android... 
+Launching lib\main.dart on Android SDK built for x86 in debug mode...
+Running Gradle task 'assembleDebug'...                          
+
+Terminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^C 
