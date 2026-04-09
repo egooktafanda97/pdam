@@ -1,6 +1,6 @@
 class ApiConfig {
   // Otomatis: localhost untuk web, 10.0.2.2 untuk Android emulator
-  static String get baseUrl => 'http://10.0.2.2:8000/api';
+  static String get baseUrl => 'http://139.162.5.182:8088/api';
 
   // Auth
   static const String login = '/auth/login';

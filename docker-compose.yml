@@ -17,9 +17,9 @@ services:
       - APP_URL=http://139.162.5.182:8088
       - DB_CONNECTION=sqlite
       - DB_DATABASE=/var/www/html/database/database.sqlite
-      - IPAYMU_API_KEY=5F446413-B4AB-4F1D-9423-BB4E70E67D01
-      - IPAYMU_VA=1179002284733404
-      - IPAYMU_URL=https://my.ipaymu.com/api/v2
+      - IPAYMU_API_KEY=SANDBOXCDCE391E-C4B7-4E55-B4B5-B05C92CC11A9-20211029145207
+      - IPAYMU_VA=0000002284733404
+      - IPAYMU_URL=https://sandbox.ipaymu.com/api/v2
     restart: unless-stopped
 
 volumes:
